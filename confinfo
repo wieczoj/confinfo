@@ -27,7 +27,7 @@ from Confinfo import Confinfo
 try:
    os.environ["EDITOR"]
 except KeyError:
-   os.environ["EDITOR"] = "/usr/bin/vim"
+   os.environ["EDITOR"] = "/usr/bin/vi"
 
 def help():
    print ("enter the parameter:")
