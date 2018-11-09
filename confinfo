@@ -1,0 +1,78 @@
+#!/usr/bin/python3
+
+# Common interface for editing files.
+# (C) 2018-11 Janusz Wieczorek <wieczoj@gmail.com>
+
+#    This package is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; version 2 dated June, 1991.
+
+#    This package is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    For a copy of the GNU General Public License,
+#    write to the Free Software Foundation, Inc.,
+#    51 Franklin St, Fifth Floor, Boston, MA
+#    02110-1301 USA
+
+
+import sys
+import os
+
+from Confinfo import Confinfo
+
+
+try:
+   os.environ["EDITOR"]
+except KeyError:
+   os.environ["EDITOR"] = "/usr/bin/vim"
+
+def help():
+   print ("enter the parameter:")
+   print ("    showversion or sv")
+   print ("    etcmtab or em")
+   print ("    etcfstab or ef")
+   print ("    etcnetworkinterfaces or eni")
+   print ('option: -f show the full contents of the file')
+   print ('option: -e edit the file')
+
+
+if len(sys.argv) < 2 or len(sys.argv) > 3:
+   help()
+   exit(-1)
+
+p = Confinfo("/etc/os-release")
+
+option = 0
+if len(sys.argv) == 3:
+   option = str(sys.argv[2])
+
+choice = str(sys.argv[1])
+
+
+if choice == 'showversion' or choice == 'sv':
+      p.showversion()
+elif choice == 'etcmtab' or choice == 'em':
+   if option == '-a':
+      p.etcmtab(1)
+   else:
+      p.etcmtab()
+elif choice == 'etcfstab' or choice == 'ef':
+   if option == '-a':
+      p.etcfstab(1)
+   elif option == '-e':
+      p.etcfstab(2)
+   else:
+      p.etcfstab()
+elif choice == 'etcnetworkinterfaces' or choice == 'eni':
+   if option == '-a':
+      p.etcnetworkinterfaces(1)
+   elif option == '-e':
+      p.etcnetworkinterfaces(2)
+   else:
+      p.etcnetworkinterfaces()
+else:
+   print('bad parameter')
+   help()
